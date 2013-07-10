@@ -5,7 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+<<<<<<< HEAD
 import java.io.UnsupportedEncodingException;
+=======
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -33,6 +39,7 @@ public class jsoncon {
 	/**
 	 * @param args
 	 */
+<<<<<<< HEAD
 	final static int n = 9;// enter number of merchants in the list
 	final static int c = 3;// number of fields in the organisations json
 
@@ -40,6 +47,15 @@ public class jsoncon {
 			throws JSONException {
 
 		String urlString = "http://ratnakar.api.clinknow.com/m/organization/add";
+=======
+	final static int n = 23;// enter number of merchants in the list
+	final static int c = 9;// number of columns for each merchant
+
+	public static void getMerchantId(JSONObject json,String orgId)
+			throws JSONException {
+
+		String urlString = "http://ratnakar.api.clinknow.com/m/campaign/update/"+orgId;
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 		String result = "";
 		String contentType = "application/json";
 		String charset = "UTF-8";
@@ -53,21 +69,33 @@ public class jsoncon {
 		System.out.println("Base64 encoded auth string: " + authStringEnc);
 
 		URL url = null;
+<<<<<<< HEAD
 		URLConnection connection = null;
+=======
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 		OutputStream output = null;
 		InputStream response = null;
 
 		try {
 			url = new URL(urlString);
+<<<<<<< HEAD
 			connection = url.openConnection();
 			connection.setRequestProperty("Authorization", "Basic "
 					+ authStringEnc);
 			connection.setDoOutput(true);
+=======
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestProperty("Authorization", "Basic "
+					+ authStringEnc);
+			connection.setDoOutput(true);
+			connection.setRequestMethod("PUT");
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 			connection.setRequestProperty("Accept-Charset", charset);
 			connection.setRequestProperty("Content-Type", contentType
 					+ ";charset=" + charset);
 			// connection.setRequestProperty("username", username);
 			// connection.setRequestProperty("password", password);
+<<<<<<< HEAD
 			output = connection.getOutputStream();
 			output.write(json.toString().getBytes());
 
@@ -92,6 +120,17 @@ public class jsoncon {
 		}
 
 		return new JSONObject(result);
+=======
+			
+			OutputStreamWriter out = new OutputStreamWriter(
+					connection.getOutputStream());
+			out.write(json.toString());
+			out.close();
+			connection.getInputStream();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 	}
 
 	public static void main(String[] args) throws JSONException {
@@ -115,6 +154,7 @@ public class jsoncon {
 			// Create a workbook object from the file at specified location.
 			// Change the path of the file as per the location on your computer.
 			Workbook wrk1 = Workbook.getWorkbook(new File(
+<<<<<<< HEAD
 					"F:/Organizations.xls"));
 
 			// Obtain the reference to the first sheet in the workbook
@@ -122,14 +162,27 @@ public class jsoncon {
 			WritableWorkbook copy = Workbook.createWorkbook(new File(
 					"F:/Organizations with ids.xls"), wrk1);
 			WritableSheet sheet2 = copy.getSheet(0);
+=======
+					"F:/campaigns with ids.xls"));
+
+			// Obtain the reference to the first sheet in the workbook
+			Sheet sheet1 = wrk1.getSheet(0);
+			
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 
 			for (int k = 0; k < c; k++) {
 				Cell colArow = sheet1.getCell(k, 0);
 				String str_colArow = colArow.getContents();
 				headings[k] = str_colArow;
+<<<<<<< HEAD
 			}
 			Label label2 = new Label(c, 0, "organization_id");
 			sheet2.addCell(label2);
+=======
+				System.out.println("Heading of  " + (k + 1) + " column \""
+						+ str_colArow + "\"");
+			}
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 			for (int i = 1; i < n; i++) {
 				for (int j = 0; j < c; j++)
 				// Obtain reference to the Cell using getCell(int col, int row)
@@ -138,14 +191,28 @@ public class jsoncon {
 					JSONArray campaignInfo = new JSONArray();
 					Cell colArow1 = sheet1.getCell(j, i);
 					String str_colArow1 = colArow1.getContents();
+<<<<<<< HEAD
 					if (headings[j].equals("address"))
 						json.put(headings[j], addressOrg);
 					else
                         jsonObj.put(headings[j], str_colArow1);
+=======
+					if (headings[j].equals("creative_id"))
+						json.put(headings[j], str_colArow1);
+					else {
+						if (headings[j].equals("campaign_info")) {
+							campaignInfo.put(json);// (headings[j],json);
+							jsonObj.put(headings[j],campaignInfo);
+
+						} else
+							jsonObj.put(headings[j], str_colArow1);
+					}
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 					// System.out.println("Contents of cell Col" + jsonObj);
 					// details[j]=str_colArow1;
 				}
 				System.out.println(jsonObj);
+<<<<<<< HEAD
 
 				JSONObject orgid = jsoncon.getMerchantId(jsonObj);
 				System.out.println(orgid);
@@ -156,18 +223,29 @@ public class jsoncon {
 				orgId = (String) jsonp.get("organization_id");
 				Label label1 = new Label(c, i, orgId);
 				sheet2.addCell(label1);
+=======
+				Cell colArow1 = sheet1.getCell(c, i);
+				String str_colArow = colArow1.getContents();
+
+				jsoncon.getMerchantId(jsonObj,str_colArow);
+
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 
 				// System.out.println("org_id= " +
 				// jsonp.get("Organization_id"));
 			}
 			// writing all orgId's into the excel sheet
+<<<<<<< HEAD
 			copy.write();
 			copy.close();
+=======
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 
 		} catch (BiffException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+<<<<<<< HEAD
 		} catch (ParseException e) {
 			e.printStackTrace();
 		} catch (RowsExceededException e) {
@@ -175,6 +253,9 @@ public class jsoncon {
 		} catch (WriteException e) {
 			e.printStackTrace();
 		}
+=======
+		} 
+>>>>>>> 8956a8e909923766b4a1ca96780018f6e5327484
 
 	}
 
